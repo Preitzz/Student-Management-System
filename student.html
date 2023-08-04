@@ -1,0 +1,118 @@
+<?php
+  include_once("connect.php");?>
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+    <title>Student Manegement</title>
+  </head>
+  <body>
+
+    <div class="studentData">
+        <form action="" id="form1">
+            <input type="name" placeholder="Name" id="name" required>
+            <input type="class" placeholder="Class" id="name" required>
+          
+            <input type="number" placeholder="Roll No" id="rollNo" required>
+            <input type="submit" class="btn btn-warning">
+        </form>
+    </div>
+
+
+
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Class</th>
+                    
+                    <th>Roll No.</th>
+                    <th>Attendence</th>
+                </tr>
+            </thead>
+
+            <tbody id="tbody">
+              <td data-label="name"><?php echo $row["name"]; ?></td>
+              <td data-label="class"><?php echo $row["class"]; ?></td>
+              <td> <?php echo $row["rollNo"] ?></td>
+              <td> <?php echo $row['present'] ?></td>
+            </tbody>
+        </table>
+  
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="./student.js"></script>
+    <?php
+
+
+$host = "localhost";
+    $user = "root";
+    $pass = "";
+    $dbname = "attendance";
+
+    
+    $conn = mysqli_connect($host, $user, $pass, $dbname);
+
+    if (!$conn) {
+      
+      die("Connection failed: " . mysqli_connect_error());
+    }
+  }
+  ?>
+  <?php
+  if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // Validate the form data
+    $name = $_POST['name'];
+    $class = $_POST['class'];
+    $rollNo = $_POST['rollNo'];
+    
+   
+  
+    if (empty($name) || empty($class) || empty($rollNo) ) {
+      
+      echo "Please fill out all fields.";
+    } else {
+     
+      
+      
+      $sql = "INSERT INTO users(name, class, rollNo,attendance) VALUES('$name','$class','$rollNo','present')";
+      echo $sql;
+      if (mysqli_query($conn, $sql)) {
+        echo "New record created successfully";
+      } else {
+        echo "Error: " . $sql . "<br>" . mysqli_error($conn);
+      }
+      
+       mysqli_close($conn);
+  
+     
+     
+    }
+  }
+  ?>
+
+
+  <?php
+
+  $sql = "SELECT name, class,rollNo, attendance FROM users";
+  $result = mysqli_query($conn, $sql);
+  
+  
+  ?>
+  <?php
+          if (mysqli_num_rows($result) > 0)
+{
+  while($row = mysqli_fetch_assoc($result)) {
+if (mysqli_query($conn, $sql)) {
+?>  
+
+</body>
+</html>
+
